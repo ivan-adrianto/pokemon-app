@@ -40,7 +40,7 @@ const MenuItem = styled.div`
     background-color: ${(props) => props.theme.colors.purple};
     color: white;
   }
-  &:nth-child(1) {
+  &:nth-of-type(1) {
     border-bottom: 0px;
   }
 `;

@@ -114,7 +114,7 @@ function Navbar() {
       {/* Desktop Navbar */}
       <DesktopNav>
         <NavMenuWrapper>
-          <NavbarBrand src="/pokemon-logo.png" />
+          <NavbarBrand src="/pokemon-logo.png" onClick={() => router.push("/")} />
           <MenuItem
             activeMenu={location === "/"}
             onClick={() => router.push("/")}

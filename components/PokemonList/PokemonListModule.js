@@ -36,7 +36,7 @@ function PokemonListModule() {
     offset: activePage,
   };
 
-  const { toggleErrorModal } = useContext(AppContext);
+  const { setErrorModal } = useContext(AppContext);
 
   const { loading, error, data } = useQuery(GET_POKEMONS, {
     variables: gqlVariables,
@@ -44,21 +44,29 @@ function PokemonListModule() {
 
   useEffect(() => {
     if (loading) return <p>Loading...</p>;
-    if (error) return toggleErrorModal(true);
+    if (error)
+      return setErrorModal({
+        show: true,
+        message: error?.message,
+        onClose: () => 
+          setErrorModal({ show: false, message: "", onClose: () => {} }),
+      });
     const myPokemon = JSON.parse(localStorage.getItem("myPokemon"));
 
     let newPokemons = pokemons
       .concat(data.pokemons.results)
       ?.map((pokemon) => ({
         ...pokemon,
-        owned: myPokemon.filter(localPokemon => localPokemon?.pokemon?.id === pokemon?.id)?.length
+        owned: myPokemon.filter(
+          (localPokemon) => localPokemon?.pokemon?.id === pokemon?.id
+        )?.length,
       }));
     setPokemons(newPokemons);
     setNextOffset(data.pokemons.nextOffset);
     setFirstRender(false);
   }, [loading, error, data]);
 
-  console.log(`pokemons`, pokemons)
+  console.log(`pokemons`, pokemons);
 
   return (
     <div>
@@ -85,7 +93,6 @@ function PokemonListModule() {
                   image={pokemon?.image}
                   name={pokemon?.name}
                   link={`pokemon-detail/${pokemon?.name}`}
-                  order={key + 1}
                   owned={pokemon?.owned}
                 />
               ))}

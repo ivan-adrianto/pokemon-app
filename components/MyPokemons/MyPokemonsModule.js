@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import { GET_POKEMONS } from "../../graphQl/Queries";
 import { Container } from "../Common/Container";
@@ -8,6 +8,8 @@ import LoadingSpinner from "../Common/LoadingSpinner";
 import { Text } from "../Common/Text";
 import CardList from "../Common/CardList";
 import Navbar from "../../layouts/Navbar";
+import ModalReleasePokemon from "../Modals/ModalReleasePokemon";
+import { AppContext } from "../../context/AppContext";
 
 const CardListContainer = styled.div`
   display: flex;
@@ -36,10 +38,11 @@ const EmptyListWrapper = styled.div`
   position: absolute;
 `;
 function MyPokemonsModule() {
+  const { releaseModal } = useContext(AppContext)
   const [pokemons, setPokemons] = useState([]);
   useEffect(() => {
     setPokemons(JSON.parse(localStorage.getItem("myPokemon")));
-  }, []);
+  }, [releaseModal]);
 
   return (
     <div>
@@ -66,11 +69,12 @@ function MyPokemonsModule() {
                 name={pokemon?.nickname}
                 link={`/my-pokemon-detail/${pokemon?.nickname}`}
                 key={key}
-                order={key + 1}
+                pokemon={pokemon}
               />
             ))
           )}
         </CardListContainer>
+        <ModalReleasePokemon/>
       </Container>
     </div>
   );

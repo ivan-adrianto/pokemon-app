@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useRouter } from "next/dist/client/router";
 import React, { useContext } from "react";
-import { AppContext } from "../../../context/AppContext";;
+import { AppContext } from "../../../context/AppContext";
 import { toTitleCase } from "../../../helpers/helpers";
 import { Text } from "../../Common/Text";
 
@@ -22,9 +22,21 @@ const PokeballImage = styled.img`
   }
 `;
 
-function ReleasePokemonTab() {
-  const { nickname } = useRouter().query
-  const { toggleReleaseModal } = useContext(AppContext);
+function ReleasePokemonTab({ pokemon }) {
+  const { nickname } = useRouter().query;
+  const { setReleaseModal } = useContext(AppContext);
+
+  const handleRelease = () => {
+    setReleaseModal({
+      show: true,
+      pokemon: { pokemon },
+      onClose: () => {
+        setReleaseModal({ show: false, pokemon: {}, onClose: () => {} });
+      },
+    });
+  };
+
+  console.log(`pokemon`, pokemon);
 
   return (
     <MainContainer>
@@ -32,7 +44,7 @@ function ReleasePokemonTab() {
         src="/pokeball-catch.png"
         alt="pokeball"
         height="70px"
-        onClick={() => toggleReleaseModal()}
+        onClick={handleRelease}
       />
       <Text black bold mt>
         Tap the pokeball to release {toTitleCase(nickname)}

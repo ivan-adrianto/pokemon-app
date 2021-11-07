@@ -1,8 +1,11 @@
 import styled from "@emotion/styled";
 import { useRouter } from "next/dist/client/router";
-import React from "react";
+import React, { useContext } from "react";
 import { usePalette } from "react-palette";
+import { AppContext } from "../../context/AppContext";
 import { idConverter } from "../../helpers/helpers";
+import ModalReleasePokemon from "../Modals/ModalReleasePokemon";
+import { Button } from "./Button";
 import { Text, TextPill } from "./Text";
 
 const Card = styled.div`
@@ -53,10 +56,25 @@ const PokemonNumber = styled.p`
   }
 `;
 
-function CardList({ name, image, link, order, owned }) {
+const ButtonWrapper = styled.div`
+  position: absolute;
+  bottom: 10px;
+`;
+
+function CardList({ name, image, link, owned, pokemon }) {
   const router = useRouter();
   const location = router.pathname;
+
+  const { setReleaseModal } = useContext(AppContext);
   const { data } = usePalette(image);
+
+  const handleRelease = (e) => {
+    e.cancelBubble = true;
+    if (e.stopPropagation) {
+      e.stopPropagation();
+    }
+    setReleaseModal({ show: true, pokemon });
+  };
 
   return (
     <Card margin bgColor={data?.vibrant} onClick={() => router.push(`${link}`)}>
@@ -64,7 +82,20 @@ function CardList({ name, image, link, order, owned }) {
         {name}
       </Text>
       {location !== "/" ? (
-        <PokemonNumber>{idConverter(order)}</PokemonNumber>
+        <ButtonWrapper>
+          <Button
+            minWidth="unset"
+            margin="0px"
+            fontSize="12px"
+            height="20px"
+            zIndex="5"
+            padding="3px 10px 5px 10px"
+            danger
+            onClick={(e) => handleRelease(e)}
+          >
+            Release
+          </Button>
+        </ButtonWrapper>
       ) : (
         <TextPill mt="5px" ml="-2px" size="12px">
           Owned: {owned}

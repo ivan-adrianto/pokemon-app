@@ -19,7 +19,7 @@ const AppContextReducer = (state, action) => {
     case ACTIONS.RELEASE:
       return {
         ...state,
-        showReleaseModal: !state.showReleaseModal,
+        releaseModal: action.payload,
       };
     case ACTIONS.MENU:
       return {
@@ -29,7 +29,7 @@ const AppContextReducer = (state, action) => {
     case ACTIONS.ERROR:
       return {
         ...state,
-        showErrorModal: action.payload,
+        errorModal: action.payload,
       };
     default:
       return state;
@@ -39,9 +39,9 @@ const AppContextReducer = (state, action) => {
 export const AppProvider = ({ children }) => {
   const initialState = {
     showCatchModal: false,
-    showReleaseModal: false,
+    releaseModal: { show: false, pokemon: {}, onClose: () => {} },
     showMenu: false,
-    showErrorModal: false,
+    errorModal: { show: false, message: "", onClose: () => {} },
   };
 
   const [state, dispatch] = useReducer(AppContextReducer, initialState);
@@ -50,11 +50,11 @@ export const AppProvider = ({ children }) => {
     dispatch({ type: ACTIONS.CATCH });
   };
 
-  const toggleReleaseModal = () => {
-    dispatch({ type: ACTIONS.RELEASE });
+  const setReleaseModal = (payload) => {
+    dispatch({ type: ACTIONS.RELEASE, payload });
   };
 
-  const toggleErrorModal = (payload) => {
+  const setErrorModal = (payload) => {
     dispatch({ type: ACTIONS.ERROR, payload });
   };
 
@@ -64,12 +64,12 @@ export const AppProvider = ({ children }) => {
 
   const AppValue = {
     showCatchModal: state.showCatchModal,
-    showReleaseModal: state.showReleaseModal,
-    showErrorModal: state.showErrorModal,
+    releaseModal: state.releaseModal,
+    errorModal: state.errorModal,
     showMenu: state.showMenu,
     toggleCatchModal,
-    toggleReleaseModal,
-    toggleErrorModal,
+    setReleaseModal,
+    setErrorModal,
     setShowMenu,
   };
 

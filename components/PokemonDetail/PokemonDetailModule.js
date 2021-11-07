@@ -57,9 +57,10 @@ const BriefWrapper = styled.div`
 `;
 
 function PokemonDetailModule() {
-  const pokemonName = useRouter().query?.pokemonName;
+  const router = useRouter();
+  const { pokemonName } = router.query;
 
-  const { toggleErrorModal } = useContext(AppContext);
+  const { setErrorModal } = useContext(AppContext);
 
   const gqlVariables = { name: pokemonName };
   const { loading, error, data } = useQuery(GET_POKEMON_DETAIL, {
@@ -68,7 +69,15 @@ function PokemonDetailModule() {
 
   useEffect(() => {
     if (loading) return <p>Loading...</p>;
-    if (error) return toggleErrorModal(true);
+    if (error)
+      return setErrorModal({
+        show: true,
+        message: error?.message,
+        onClose: () => {
+          setErrorModal({ show: false, message: "", onClose: () => {} }),
+          router.push("/")
+        }
+      });
   }, [loading, error, data]);
 
   const {

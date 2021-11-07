@@ -1,9 +1,7 @@
-import { useApolloClient } from "@apollo/client";
 import styled from "@emotion/styled";
 import { useRouter } from "next/dist/client/router";
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
-import { GET_POKEMON_DETAIL } from "../../graphQl/Queries";
 import { toTitleCase } from "../../helpers/helpers";
 import { Button } from "../Common/Button";
 import LoadingSpinner from "../Common/LoadingSpinner";
@@ -76,7 +74,8 @@ const FormInput = styled.form`
 function ModalCatchPokemon({ pokemon }) {
   const { pokemonName } = useRouter().query;
 
-  const { toggleCatchModal, showCatchModal } = useContext(AppContext);
+  const { toggleCatchModal, showCatchModal, setErrorModal, errorModal } =
+    useContext(AppContext);
 
   const [loadingCatch, setLoadingCatch] = useState(true);
   const [successSave, setSuccessSave] = useState(false);
@@ -99,15 +98,29 @@ function ModalCatchPokemon({ pokemon }) {
     setSuccessSave(false);
   };
 
-  const savePokemon = () => {
+  const savePokemon = (e) => {
+    e.preventDefault();
     const newPokemon = {
       nickname,
       pokemon,
     };
     const myPokemon = JSON.parse(localStorage.getItem("myPokemon"));
-    myPokemon?.push(newPokemon);
-    localStorage.setItem("myPokemon", JSON.stringify(myPokemon));
-    setSuccessSave(true);
+    const isNicknameExist = myPokemon.find(
+      (pokemon) =>
+        pokemon?.nickname?.toLowerCase() === newPokemon?.nickname?.toLowerCase()
+    );
+    if (isNicknameExist) {
+      setErrorModal({
+        show: true,
+        message: `You're already have pokemon with nickname ${nickname}`,
+        onClose: () =>
+          setErrorModal({ show: false, message: "", onClose: () => {} }),
+      });
+    } else {
+      myPokemon?.push(newPokemon);
+      localStorage.setItem("myPokemon", JSON.stringify(myPokemon));
+      setSuccessSave(true);
+    }
   };
 
   const renderLoading = () => {
@@ -200,6 +213,10 @@ function ModalCatchPokemon({ pokemon }) {
     } else {
       return renderFailedCatch();
     }
+  };
+
+  const handleCloseError = () => {
+    setErrorModal(false);
   };
 
   return (

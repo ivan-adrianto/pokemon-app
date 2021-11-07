@@ -43,7 +43,7 @@ function DetailTabsMyPokemon({ color, pokemon }) {
 
   const getActiveTab = (tab) => {
     if (tab === "release") {
-      return <ReleasePokemonTab />;
+      return <ReleasePokemonTab pokemon={pokemon} />;
     } else if (tab === "stats") {
       return <PokemonStatsTab pokemon={pokemon} />;
     } else {

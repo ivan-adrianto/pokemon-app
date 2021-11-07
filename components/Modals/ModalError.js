@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useRouter } from "next/dist/client/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { toTitleCase } from "../../helpers/helpers";
 import { Button } from "../Common/Button";
@@ -50,29 +50,24 @@ const FailedIconWrapper = styled.div`
   margin: 25px;
 `;
 
-function ModalError({ message }) {
+function ModalError() {
   const router = useRouter();
   const { pokemonName } = router.query;
 
-  const { toggleErrorModal, showErrorModal } = useContext(AppContext);
-
-  const closeError = () => {
-    toggleErrorModal(false);
-    router.pathname !== "/"  && router.push("/");
-  };
+  const { errorModal } = useContext(AppContext);
 
   const errorConverter = () => {
-    if (message === "Failed to fetch") {
+    if (errorModal?.message === "Failed to fetch") {
       return "Please check your connection";
-    } else if (message === "Request failed with status code 404") {
+    } else if (errorModal?.message === "Request failed with status code 404") {
       return `There's no pokemon with name ${toTitleCase(pokemonName)} `;
     } else {
-      return "Something went wrong. Try again later...";
+      return errorModal?.message;
     }
   };
 
   return (
-    <ModalContainer show={showErrorModal}>
+    <ModalContainer show={errorModal?.show}>
       <ModalContent>
         <Text black bold sm center>
           Error
@@ -84,7 +79,7 @@ function ModalError({ message }) {
           <img src={"/cross.png"} height="30px" alt={"failed"} />
         </FailedIconWrapper>
         <ButtonWrapper>
-          <Button onClick={closeError}>OK</Button>
+          <Button onClick={() => errorModal?.onClose()}>OK</Button>
         </ButtonWrapper>
       </ModalContent>
     </ModalContainer>

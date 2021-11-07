@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useRouter } from "next/dist/client/router";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { toTitleCase } from "../../helpers/helpers";
 import { Button } from "../Common/Button";
@@ -45,31 +45,38 @@ const ButtonWrapper = styled.div`
   display: flex;
 `;
 
-function ModalReleasePokemon({ pokemon }) {
-  const router = useRouter()
-  const { nickname } = router.query;
+function ModalReleasePokemon() {
+  const { releaseModal, setReleaseModal } = useContext(AppContext);
+  const pokemon = releaseModal?.pokemon?.pokemon;
 
-  const { toggleReleaseModal, showReleaseModal } = useContext(AppContext);
+  const router = useRouter();
+  const nickname = router.query?.nickname || releaseModal?.pokemon?.nickname;
 
   const [loadingRelease, setLoadingRelease] = useState(false);
   const [successRelease, setSuccessRelease] = useState(false);
 
   const closeReleaseModal = () => {
-    setLoadingRelease(true);
-    toggleReleaseModal();
+    setLoadingRelease(false);
+    setReleaseModal({ show: false, pokemon: {} });
     setSuccessRelease(false);
-    router.push("/my-pokemons")
+    router.push("/my-pokemons/");
   };
 
   const releasePokemon = () => {
     setLoadingRelease(true);
     const myPokemon = JSON.parse(localStorage.getItem("myPokemon"));
-    const newPokemon = myPokemon?.filter((pokemon) => pokemon.nickname !== nickname);
+    const newPokemon = myPokemon?.filter(
+      (pokemon) => pokemon.nickname !== nickname
+    );
     localStorage.setItem("myPokemon", JSON.stringify(newPokemon));
     setTimeout(() => {
       setLoadingRelease(false);
       setSuccessRelease(true);
     }, 1000);
+  };
+
+  const cancelRelease = () => {
+    setReleaseModal({ show: false, pokemon: {}, onClose: () => {} });
   };
 
   const renderLoading = () => {
@@ -89,7 +96,11 @@ function ModalReleasePokemon({ pokemon }) {
         <Text black bold sm center>
           {toTitleCase(nickname)} has been released
         </Text>
-        <PokeballRelease src={"/pokeball-open.png"} height="150px" alt={nickname} />
+        <PokeballRelease
+          src={"/pokeball-open.png"}
+          height="150px"
+          alt={nickname}
+        />
         <Button onClick={closeReleaseModal}>OK</Button>
       </>
     );
@@ -107,7 +118,8 @@ function ModalReleasePokemon({ pokemon }) {
           alt={"pokemon"}
         />
         <ButtonWrapper>
-          <Button onClick={releasePokemon}>OK</Button>
+          <Button onClick={releasePokemon} danger>Release</Button>
+          <Button onClick={cancelRelease}>Cancel</Button>
         </ButtonWrapper>
       </>
     );
@@ -124,7 +136,7 @@ function ModalReleasePokemon({ pokemon }) {
   };
 
   return (
-    <ModalContainer show={showReleaseModal}>
+    <ModalContainer show={releaseModal?.show}>
       <ModalContent>{renderContent()}</ModalContent>
     </ModalContainer>
   );
