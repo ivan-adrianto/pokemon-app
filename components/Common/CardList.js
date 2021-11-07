@@ -42,20 +42,6 @@ const PokeballBg = styled.img`
   z-index: 1;
 `;
 
-const PokemonNumber = styled.p`
-  font-size: 28px;
-  font-weight: 700;
-  opacity: 0.3;
-  color: white;
-  position: absolute;
-  top: 7px;
-  @media (max-width: 769px) {
-    top: 10px;
-    left: 10px;
-    font-size: 20px;
-  }
-`;
-
 const ButtonWrapper = styled.div`
   position: absolute;
   bottom: 10px;

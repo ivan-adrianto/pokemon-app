@@ -34,9 +34,6 @@ const EmptyList = styled.div`
   color: ${(props) => props.theme.colors.black};
 `;
 
-const EmptyListWrapper = styled.div`
-  position: absolute;
-`;
 function MyPokemonsModule() {
   const { releaseModal } = useContext(AppContext)
   const [pokemons, setPokemons] = useState([]);
@@ -56,10 +53,10 @@ function MyPokemonsModule() {
             <EmptyList>
               <Text bold lg black center>...</Text>
               <Text bold lg black center>
-                It's empty here
+                It&apos;s empty here
               </Text>
               <Text bold sm black center mt>
-                You don't have any Pokemon yet
+                You don&apos;t have any Pokemon yet
               </Text>
             </EmptyList>
           ) : (

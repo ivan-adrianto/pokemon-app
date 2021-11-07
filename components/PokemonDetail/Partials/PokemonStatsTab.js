@@ -64,8 +64,8 @@ function PokemonStatsTab({ pokemon }) {
   return (
     <MainContainer>
       <div>
-        {pokemon?.stats?.map((stat) => (
-          <StatItem>
+        {pokemon?.stats?.map((stat, key) => (
+          <StatItem key={key}>
             <StatTitle>
               {stat?.stat?.name === "hp" ? "HP" : toTitleCase(stat?.stat?.name)}
             </StatTitle>

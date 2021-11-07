@@ -29,19 +29,4 @@ export const theme = {
       water: "#2281E2",
     },
   },
-  breakpoints: {
-    small: "500",
-    medium: "900",
-    large: "1200",
-  },
 };
-
-export const breakpoints = [
-  theme.breakpoints.small,
-  theme.breakpoints.medium,
-  theme.breakpoints.large,
-];
-
-export const mq = facepaint(
-  breakpoints.map((bp) => `@media (min-width: ${bp}px)`)
-);

@@ -1,8 +1,6 @@
 import Head from "../layouts/Head";
 import PokemonListModule from "../components/PokemonList/PokemonListModule";
 
-export const config = { amp: "hybrid" };
-
 export default function Home() {
 
   return (
