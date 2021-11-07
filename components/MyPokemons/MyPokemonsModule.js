@@ -1,10 +1,6 @@
-import { useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
 import React, { useContext, useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroller";
-import { GET_POKEMONS } from "../../graphQl/Queries";
 import { Container } from "../Common/Container";
-import LoadingSpinner from "../Common/LoadingSpinner";
 import { Text } from "../Common/Text";
 import CardList from "../Common/CardList";
 import Navbar from "../../layouts/Navbar";

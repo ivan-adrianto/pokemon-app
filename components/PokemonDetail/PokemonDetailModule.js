@@ -1,4 +1,4 @@
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
 import { useRouter } from "next/dist/client/router";
 import React, { useContext, useEffect } from "react";

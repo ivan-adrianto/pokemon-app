@@ -112,7 +112,7 @@ function ModalCatchPokemon({ pokemon }) {
     if (isNicknameExist) {
       setErrorModal({
         show: true,
-        message: `You&apos;re already have pokemon with nickname ${nickname}`,
+        message: `You're already have pokemon with nickname ${toTitleCase(nickname)}. Try another nickname!`,
         onClose: () =>
           setErrorModal({ show: false, message: "", onClose: () => {} }),
       });

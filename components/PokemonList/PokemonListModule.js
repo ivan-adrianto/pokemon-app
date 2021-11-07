@@ -51,13 +51,13 @@ function PokemonListModule() {
         onClose: () => 
           setErrorModal({ show: false, message: "", onClose: () => {} }),
       });
+      
     const myPokemon = JSON.parse(localStorage.getItem("myPokemon"));
-
     let newPokemons = pokemons
       .concat(data.pokemons.results)
       ?.map((pokemon) => ({
         ...pokemon,
-        owned: myPokemon.filter(
+        owned: myPokemon?.filter(
           (localPokemon) => localPokemon?.pokemon?.id === pokemon?.id
         )?.length,
       }));
@@ -65,8 +65,6 @@ function PokemonListModule() {
     setNextOffset(data.pokemons.nextOffset);
     setFirstRender(false);
   }, [loading, error, data]);
-
-  console.log(`pokemons`, pokemons);
 
   return (
     <div>

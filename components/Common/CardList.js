@@ -3,8 +3,6 @@ import { useRouter } from "next/dist/client/router";
 import React, { useContext } from "react";
 import { usePalette } from "react-palette";
 import { AppContext } from "../../context/AppContext";
-import { idConverter } from "../../helpers/helpers";
-import ModalReleasePokemon from "../Modals/ModalReleasePokemon";
 import { Button } from "./Button";
 import { Text, TextPill } from "./Text";
 

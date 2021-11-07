@@ -36,8 +36,6 @@ function ReleasePokemonTab({ pokemon }) {
     });
   };
 
-  console.log(`pokemon`, pokemon);
-
   return (
     <MainContainer>
       <PokeballImage

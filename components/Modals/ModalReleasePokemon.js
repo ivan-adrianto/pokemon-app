@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useRouter } from "next/dist/client/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { toTitleCase } from "../../helpers/helpers";
 import { Button } from "../Common/Button";

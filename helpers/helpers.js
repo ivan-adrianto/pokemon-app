@@ -16,13 +16,3 @@ export const kebabToCapitalize = (string) => {
     )
     ?.join(" ");
 };
-
-export const idConverter = (id) => {
-  if (id < 10) {
-    return `#00${id}`
-  } else if (id < 100) {
-    return `#0${id}`
-  } else {
-    return `#${id}`
-  }
-}

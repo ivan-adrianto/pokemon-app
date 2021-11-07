@@ -9,10 +9,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
-    "@emotion/primitives": "^11.0.0",
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
-    "facepaint": "^1.2.1",
     "graphql": "^15.7.2",
     "next": "12.0.2",
     "react": "17.0.2",
